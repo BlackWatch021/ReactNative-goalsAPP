@@ -9,36 +9,25 @@ import {
   FlatList,
 } from "react-native";
 import { useState } from "react";
+
 import GoalList from "./components/GoalList";
+import GoalInput from "./components/GoalInput";
 
 export default function App() {
-  const [enteredText, setEnteredText] = useState("");
   const [goals, setGoals] = useState([]);
 
-  const inputHandler = (text) => {
-    setEnteredText(text);
-  };
-
-  const btnPressed = () => {
+  const btnPressed = (enteredText) => {
     if (enteredText === "") {
       setGoals((current) => [...current]);
     } else {
       setGoals((current) => [...current, enteredText]);
     }
-    setEnteredText("");
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.addGoals}>
-        <TextInput
-          style={styles.inputField}
-          placeholder="Type your goal here"
-          onChangeText={inputHandler}
-          value={enteredText}
-        />
-        <Button style={styles.btn} title="Add goal" onPress={btnPressed} />
-      </View>
+      <GoalInput function={btnPressed} />
+
       <View style={styles.goalsList}>
         <FlatList
           data={goals}
@@ -55,23 +44,6 @@ const styles = StyleSheet.create({
     height: 100 + "%",
     marginLeft: 20,
     marginRight: 20,
-  },
-  addGoals: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    borderBottomColor: "black",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  inputField: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 3,
-    paddingLeft: 15,
-    marginRight: 10,
   },
   goalsList: {
     flex: 4,
