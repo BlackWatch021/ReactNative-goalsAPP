@@ -1,20 +1,90 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  StatusBar,
+  Button,
+  ScrollView,
+  FlatList,
+} from "react-native";
+import { useState } from "react";
 
 export default function App() {
+  const [enteredText, setEnteredText] = useState("");
+  const [goals, setGoals] = useState([]);
+
+  const inputHandler = (text) => {
+    setEnteredText(text);
+  };
+
+  const btnPressed = () => {
+    if (enteredText === "") {
+      setGoals((current) => [...current]);
+    } else {
+      setGoals((current) => [...current, enteredText]);
+    }
+    setEnteredText("");
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <View style={styles.addGoals}>
+        <TextInput
+          style={styles.inputField}
+          placeholder="Type your goal here"
+          onChangeText={inputHandler}
+          value={enteredText}
+        />
+        <Button style={styles.btn} title="Add goal" onPress={btnPressed} />
+      </View>
+      <View style={styles.goalsList}>
+        <FlatList
+          data={goals}
+          renderItem={(el) => <Text style={styles.goalEntry}>{el.item}</Text>}
+        />
+        <StatusBar barStyle="light-content" backgroundColor="black" />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    height: 100 + "%",
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  addGoals: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderBottomColor: "black",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  inputField: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 3,
+    paddingLeft: 15,
+    marginRight: 10,
+  },
+  goalsList: {
+    flex: 4,
+    marginTop: 10,
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  goalEntry: {
+    textAlign: "center",
+    backgroundColor: "#5e0acc",
+    color: "white",
+    padding: 10,
+    // paddingLeft: 15,
+    borderRadius: 10,
+    marginTop: 15,
   },
 });
