@@ -9,6 +9,7 @@ import {
   FlatList,
 } from "react-native";
 import { useState } from "react";
+import GoalList from "./components/GoalList";
 
 export default function App() {
   const [enteredText, setEnteredText] = useState("");
@@ -41,7 +42,7 @@ export default function App() {
       <View style={styles.goalsList}>
         <FlatList
           data={goals}
-          renderItem={(el) => <Text style={styles.goalEntry}>{el.item}</Text>}
+          renderItem={(el) => <GoalList text={el.item} />}
         />
         <StatusBar barStyle="light-content" backgroundColor="black" />
       </View>
@@ -77,14 +78,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingLeft: 5,
     paddingRight: 5,
-  },
-  goalEntry: {
-    textAlign: "center",
-    backgroundColor: "#5e0acc",
-    color: "white",
-    padding: 10,
-    // paddingLeft: 15,
-    borderRadius: 10,
-    marginTop: 15,
   },
 });
