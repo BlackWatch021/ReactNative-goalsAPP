@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, StyleSheet, TextInput, Button } from "react-native";
+import { View, StyleSheet, TextInput, Button, Modal } from "react-native";
 
 const GoalInput = (prop) => {
   const [enteredText, setEnteredText] = useState("");
@@ -8,22 +8,34 @@ const GoalInput = (prop) => {
     setEnteredText(text);
   };
 
+  const addInList = () => {
+    prop.function(enteredText);
+    setEnteredText("");
+    prop.closeVisibility();
+  };
+
   return (
-    <View style={styles.addGoals}>
-      <TextInput
-        style={styles.inputField}
-        placeholder="Type your goal here"
-        onChangeText={inputHandler}
-        value={enteredText}
-      />
-      <Button
-        title="Add goal"
-        onPress={() => {
-          prop.function(enteredText);
-          setEnteredText("");
-        }}
-      />
-    </View>
+    <Modal visible={prop.visibility} animationType="slide">
+      <View style={styles.addGoals}>
+        <TextInput
+          style={styles.inputField}
+          placeholder="Type your goal here"
+          onChangeText={inputHandler}
+          value={enteredText}
+        />
+        <View style={styles.btns}>
+          <Button title="Add goal" color="#5e0acc" onPress={addInList} />
+          <Button
+            onPress={() => {
+              prop.closeVisibility();
+              setEnteredText("");
+            }}
+            title="Close"
+            color="#5e0acc"
+          />
+        </View>
+      </View>
+    </Modal>
   );
 };
 
@@ -33,18 +45,26 @@ const styles = StyleSheet.create({
   addGoals: {
     flex: 1,
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
     borderBottomColor: "black",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   inputField: {
-    flex: 1,
+    width: "80%",
     borderWidth: 1,
     borderColor: "black",
-    borderRadius: 3,
-    paddingLeft: 15,
+    borderRadius: 10,
+    padding: 10,
+    paddingLeft: 20,
     marginRight: 10,
+    backgroundColor: "white",
+  },
+  btns: {
+    marginTop: 60,
+    width: "50%",
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
 });

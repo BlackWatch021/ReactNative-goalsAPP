@@ -1,13 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  StatusBar,
-  Button,
-  ScrollView,
-  FlatList,
-} from "react-native";
+import { StyleSheet, View, StatusBar, FlatList, Button } from "react-native";
 import { useState } from "react";
 
 import GoalList from "./components/GoalList";
@@ -15,23 +6,51 @@ import GoalInput from "./components/GoalInput";
 
 export default function App() {
   const [goals, setGoals] = useState([]);
+  const [inputVisibility, setInputVisibility] = useState(false);
 
   const btnPressed = (enteredText) => {
     if (enteredText === "") {
       setGoals((current) => [...current]);
     } else {
-      setGoals((current) => [...current, enteredText]);
+      setGoals((current) => [
+        ...current,
+        { text: enteredText, id: Math.random().toString() },
+      ]);
     }
+  };
+
+  const deleteIt = (id) => {
+    setGoals((currentList) => {
+      return currentList.filter((el) => el.id !== id);
+    });
+  };
+
+  const changeVisibility = () => {
+    setInputVisibility(true);
+  };
+  const closeVisibility = () => {
+    setInputVisibility(false);
   };
 
   return (
     <View style={styles.container}>
-      <GoalInput function={btnPressed} />
+      <Button title="Add Goals" onPress={changeVisibility} color="#5e0acc" />
+      <GoalInput
+        visibility={inputVisibility}
+        closeVisibility={closeVisibility}
+        function={btnPressed}
+      />
 
       <View style={styles.goalsList}>
         <FlatList
           data={goals}
-          renderItem={(el) => <GoalList text={el.item} />}
+          renderItem={(el) => (
+            <GoalList
+              text={el.item.text}
+              id={el.item.id}
+              deleteItem={deleteIt}
+            />
+          )}
         />
         <StatusBar barStyle="light-content" backgroundColor="black" />
       </View>
@@ -42,8 +61,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     height: 100 + "%",
-    marginLeft: 20,
-    marginRight: 20,
+    margin: 20,
+    marginBottom: 0,
   },
   goalsList: {
     flex: 4,
