@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Button title="Add Goals" onPress={changeVisibility} color="#5e0acc" />
+      <Button title="Add Goals" onPress={changeVisibility} color="#a065ec" />
       <GoalInput
         visibility={inputVisibility}
         closeVisibility={closeVisibility}
@@ -52,7 +52,7 @@ export default function App() {
             />
           )}
         />
-        <StatusBar barStyle="light-content" backgroundColor="black" />
+        <StatusBar barStyle="bark-content" backgroundColor="#1e085a" />
       </View>
     </View>
   );
@@ -61,8 +61,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     height: 100 + "%",
-    margin: 20,
+    padding: 20,
     marginBottom: 0,
+    backgroundColor: "#1e085a",
   },
   goalsList: {
     flex: 4,
